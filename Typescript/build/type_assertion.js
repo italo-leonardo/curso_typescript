@@ -1,0 +1,12 @@
+"use strict";
+let nvalor;
+let svalor;
+let bvalor;
+bvalor = 10;
+nvalor = 5;
+svalor = '20';
+svalor = nvalor.toString();
+console.log(typeof (svalor));
+console.log(svalor);
+console.log(typeof (nvalor));
+console.log(nvalor);
