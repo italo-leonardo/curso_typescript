@@ -15,15 +15,28 @@ class Conta {
         console.log(`Titular: ${this.titular}`);
         console.log(`Número: ${this.numero}`);
     }
-    saldo() {
+    get saldo() {
         return this.saldoConta;
     }
+    set saldo(saldoConta) {
+        this.saldoConta = saldoConta;
+    }
     depositar(valor) {
-        this.saldoConta += valor;
+        if (valor <= 0) {
+            console.log('Valor inválido');
+            return;
+        }
+        else {
+            this.saldo += valor;
+        }
     }
     sacar(valor) {
+        if (valor <= 0) {
+            console.log('Valor inválido');
+            return;
+        }
         if (valor <= this.saldoConta) {
-            this.saldoConta -= valor;
+            this.saldo -= valor;
         }
         else {
             console.log('Saldo insuficiente');
@@ -51,6 +64,14 @@ class ContaPF extends Conta {
             super.depositar(valor);
         }
     }
+    saque(valor) {
+        if (valor > 500) {
+            console.log('Saque muito alto para pessoa física');
+        }
+        else {
+            super.sacar(valor);
+        }
+    }
 }
 class ContaPJ extends Conta {
     cnpj;
@@ -74,8 +95,18 @@ class ContaPJ extends Conta {
             super.depositar(valor);
         }
     }
+    saque(valor) {
+        if (valor > 5000) {
+            console.log('Saque muito alto para pessoa jurídica');
+        }
+        else {
+            super.sacar(valor);
+        }
+    }
 }
 const conta1 = new ContaPF(23456, 'João');
 const conta2 = new ContaPJ(54321, 'Curso em Vídeo');
-console.log(conta1.saldo());
-console.log(conta2.saldo());
+conta1.deposito(1000);
+conta2.deposito(10000);
+console.log(conta1.saldo);
+console.log(conta2.saldo);

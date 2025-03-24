@@ -1,8 +1,8 @@
-class Conta{
+abstract class Conta{
     // Public: Atributos e métodos podem ser acessados por qualquer classe
     // Private: Atributos e métodos só podem ser acessados pela própria classe
     // Protected: Atributos e métodos só podem ser acessados pela própria classe e por classes filhas
-    protected numero: number;
+    private readonly numero: number; // Depois que for atriduido nao pode ser modificado apenas leito
     protected titular: string; // Atributo protegido que pode ser acessado por classes filhas
     private saldoConta: number;
 
@@ -11,7 +11,7 @@ class Conta{
         this.titular = titular;
         this.saldoConta = 0;     
     
-    }
+    } // abstract deixa a class com abastrada nao pode ser referenciada
 
     private GerarNumeroConta(): number{
         return Math.floor(Math.random() * 1000)+1;
@@ -22,18 +22,30 @@ class Conta{
         console.log(`Número: ${this.numero}`);
     } // Método info() que exibe as informações da conta
 
-    public saldo(): number{
+    public get saldo(): number{ 
         return this.saldoConta;
-    } // Método saldo() que retorna o saldo da conta
+    } // Método get saldo() que retorna o saldo da conta
+
+    private set saldo(saldoConta: number){
+        this.saldoConta = saldoConta;
+    } // Método set saldo() que altera o saldo da conta
 
     protected depositar(valor: number): void{
-        this.saldoConta += valor;
+        if (valor <= 0){
+            console.log('Valor inválido');
+            return;
+        } else {
+            this.saldo += valor;
+        } 
     } // Método depositar() que deposita um valor na conta
 
     protected sacar(valor: number): void{
-        if(valor <= this.saldoConta){
-            this.saldoConta -= valor;
-        }else{
+        if (valor <= 0){
+            console.log('Valor inválido');
+            return;
+        } if (valor <= this.saldoConta){
+            this.saldo -= valor;
+        } else{
             console.log('Saldo insuficiente');
         }
     } // Método sacar() que saca um valor da conta
@@ -66,6 +78,15 @@ class ContaPF extends Conta{
         }
     } // Método deposito() que deposita um valor na conta de pessoa física
 
+    public saque(valor: number) {
+        if (valor > 500) {
+            console.log('Saque muito alto para pessoa física');
+        }
+        else {
+            super.sacar(valor);
+        }
+    } // Método saque() que saca um valor da conta de pessoa física
+
 } // A classe ContaPF é um molde para criar objetos do tipo ContaPF e filha da classe Conta
 
 class ContaPJ extends Conta{
@@ -92,17 +113,33 @@ class ContaPJ extends Conta{
         } // Método deposito() que deposita um valor na conta de pessoa jurídica
     }
 
+    public saque(valor: number) {
+        if (valor > 5000) {
+            console.log('Saque muito alto para pessoa jurídica');
+        }
+        else {
+            super.sacar(valor);
+        } // Método saque() que saca um valor da conta de pessoa jurídica
+    }
+
 
 } // A classe ContaPJ é um molde para criar objetos do tipo ContaPJ e filha da classe Conta
 
 const conta1 = new ContaPF(23456, 'João'); // new ContaPF() é a instanciação da classe ContaPF
 const conta2 = new ContaPJ(54321, 'Curso em Vídeo'); // new ContaPJ() é a instanciação da classe ContaPJ
+// const conta3 = new Conta("Pedro") // nao pode ser usada pq esta abstract
 
 // conta1.info();
 // conta2.info();
 
-// conta1.deposito(200)
-// conta2.deposito(2000)
+conta1.deposito(1000)
+conta2.deposito(10000)
 
-console.log(conta1.saldo());
-console.log(conta2.saldo());
+// conta1.saque(500)
+// conta1.saque(500)
+// conta1.saque(1)
+// conta1.saldo = 500; 
+// conta2.saldo = 5000;
+
+console.log(conta1.saldo);
+console.log(conta2.saldo);
