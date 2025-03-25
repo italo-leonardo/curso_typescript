@@ -11,6 +11,7 @@ const teste=(txt?:string): void=>{
 
 // console.log(Soma2(13, 22));
 
+
 const Soma2=(n:number[]): number=>{
     let res: number = 0;
     n.forEach((v)=>{

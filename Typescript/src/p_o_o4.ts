@@ -53,14 +53,24 @@ abstract class Conta{
 
 } // A classe Conta é um molde para criar objetos do tipo Conta
 
-class ContaPF extends Conta{
+interface Tributos{
+    taxaCalculo: number;
+    CalcularTrib(valor: number):number;
+} // Criacao de um interface
+
+class ContaPF extends Conta implements Tributos{
     cpf: number;
+    taxaCalculo = 0;
 
     constructor(cpf: number, titular: string){
         super(titular);
         this.cpf = cpf;
 
     };
+
+    CalcularTrib(valor: number): number {
+        return valor * this.taxaCalculo
+    }
 
     info(){
         console.log('Conta Pessoa Física');
